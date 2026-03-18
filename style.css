@@ -1,0 +1,689 @@
+/* ===== Design Tokens ===== */
+:root {
+  --font-display: 'ZCOOL XiaoWei', 'Noto Serif SC', 'Songti SC', serif;
+  --font-body: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+
+  --text-xs:   clamp(0.7rem, 0.65rem + 0.25vw, 0.8rem);
+  --text-sm:   clamp(0.8rem, 0.75rem + 0.25vw, 0.9rem);
+  --text-base: clamp(0.95rem, 0.9rem + 0.25vw, 1.05rem);
+  --text-lg:   clamp(1.1rem, 1rem + 0.5vw, 1.35rem);
+  --text-xl:   clamp(1.4rem, 1.1rem + 1vw, 2rem);
+  --text-2xl:  clamp(1.8rem, 1.2rem + 2vw, 3rem);
+  --text-3xl:  clamp(2.2rem, 1rem + 3.5vw, 4.5rem);
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --transition: 200ms ease;
+  --sidebar-w: 260px;
+
+  /* Light: warm rice paper palette */
+  --color-bg: #f5f0e8;
+  --color-surface: #faf6ee;
+  --color-surface-2: #efe9dd;
+  --color-border: #d8cdb8;
+  --color-border-light: #e8dece;
+  --color-text: #2c2416;
+  --color-text-muted: #6b5d4a;
+  --color-text-faint: #a89a84;
+  --color-accent: #8b4513;
+  --color-accent-light: #c2956a;
+  --color-ruby: #9e3636;
+  --color-seal: #b22222;
+  --color-highlight: rgba(139, 69, 19, 0.06);
+  --color-overlay: rgba(44, 36, 22, 0.5);
+  --shadow-sm: 0 1px 3px rgba(44, 36, 22, 0.06);
+  --shadow-md: 0 4px 12px rgba(44, 36, 22, 0.08);
+}
+
+[data-theme="dark"] {
+  --color-bg: #1a1612;
+  --color-surface: #211c17;
+  --color-surface-2: #2a241d;
+  --color-border: #3d3428;
+  --color-border-light: #322b21;
+  --color-text: #d4c8b4;
+  --color-text-muted: #8a7d6b;
+  --color-text-faint: #5a5044;
+  --color-accent: #c2956a;
+  --color-accent-light: #8b6a42;
+  --color-ruby: #d47070;
+  --color-seal: #c44444;
+  --color-highlight: rgba(194, 149, 106, 0.08);
+  --color-overlay: rgba(0, 0, 0, 0.6);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --color-bg: #1a1612;
+    --color-surface: #211c17;
+    --color-surface-2: #2a241d;
+    --color-border: #3d3428;
+    --color-border-light: #322b21;
+    --color-text: #d4c8b4;
+    --color-text-muted: #8a7d6b;
+    --color-text-faint: #5a5044;
+    --color-accent: #c2956a;
+    --color-accent-light: #8b6a42;
+    --color-ruby: #d47070;
+    --color-seal: #c44444;
+    --color-highlight: rgba(194, 149, 106, 0.08);
+    --color-overlay: rgba(0, 0, 0, 0.6);
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.3);
+  }
+}
+
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+  hanging-punctuation: first last;
+}
+
+body {
+  min-height: 100dvh;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.85;
+  color: var(--color-text);
+  background: var(--color-bg);
+  overflow-x: hidden;
+}
+
+button { cursor: pointer; background: none; border: none; font: inherit; color: inherit; }
+a { color: inherit; text-decoration: none; }
+input { font: inherit; color: inherit; }
+
+::selection {
+  background: rgba(139, 69, 19, 0.15);
+  color: var(--color-text);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ===== App Layout ===== */
+#app {
+  display: flex;
+  min-height: 100dvh;
+}
+
+/* ===== Sidebar ===== */
+.sidebar {
+  width: var(--sidebar-w);
+  height: 100dvh;
+  position: fixed;
+  left: 0; top: 0;
+  background: var(--color-surface);
+  border-right: 1px solid var(--color-border-light);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.sidebar-header {
+  padding: var(--space-6) var(--space-6) var(--space-3);
+  text-align: center;
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.logo {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  color: var(--color-accent);
+  cursor: pointer;
+  transition: color var(--transition);
+}
+.logo:hover { color: var(--color-seal); }
+
+.logo-sub {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  letter-spacing: 0.5em;
+  margin-top: var(--space-1);
+}
+
+.sidebar-search {
+  padding: var(--space-3) var(--space-4);
+}
+
+.sidebar-search input {
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-bg);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-xs);
+  transition: border-color var(--transition);
+}
+.sidebar-search input::placeholder { color: var(--color-text-faint); }
+.sidebar-search input:focus {
+  border-color: var(--color-accent-light);
+  outline: none;
+}
+
+.sidebar-toc {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--space-2) 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.toc-section {
+  margin-bottom: var(--space-1);
+}
+
+.toc-section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: color var(--transition), background var(--transition);
+  user-select: none;
+}
+.toc-section-title:hover {
+  color: var(--color-accent);
+  background: var(--color-highlight);
+}
+.toc-section-title .arrow {
+  font-size: 0.6em;
+  transition: transform var(--transition);
+  color: var(--color-text-faint);
+}
+.toc-section-title.open .arrow {
+  transform: rotate(90deg);
+}
+
+.toc-subsection {
+  display: none;
+}
+.toc-subsection.open { display: block; }
+
+.toc-sub-title {
+  padding: var(--space-1) var(--space-4) var(--space-1) var(--space-8);
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  letter-spacing: 0.1em;
+}
+
+.toc-poem {
+  display: block;
+  padding: var(--space-1) var(--space-4) var(--space-1) var(--space-10);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.toc-poem:hover {
+  color: var(--color-accent);
+  background: var(--color-highlight);
+}
+.toc-poem.active {
+  color: var(--color-accent);
+  background: var(--color-highlight);
+  font-weight: 500;
+}
+
+.sidebar-footer {
+  padding: var(--space-3) var(--space-4);
+  border-top: 1px solid var(--color-border-light);
+  text-align: center;
+}
+.sidebar-footer p {
+  font-size: 0.65rem;
+  color: var(--color-text-faint);
+}
+
+/* ===== Mobile Header ===== */
+.mobile-header {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 48px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border-light);
+  z-index: 90;
+  align-items: center;
+  padding: 0 var(--space-3);
+  gap: var(--space-3);
+}
+
+.mobile-title {
+  flex: 1;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--color-accent);
+  letter-spacing: 0.2em;
+}
+
+.menu-btn, .theme-btn {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  transition: all var(--transition);
+}
+.menu-btn:hover, .theme-btn:hover {
+  background: var(--color-highlight);
+  color: var(--color-accent);
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--color-overlay);
+  z-index: 99;
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+.overlay.active { display: block; opacity: 1; }
+
+/* ===== Main ===== */
+.main {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-height: 100dvh;
+}
+
+.view { display: none; }
+.view.active { display: block; }
+
+/* ===== Home View ===== */
+.home-content {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-16) var(--space-6) var(--space-12);
+  text-align: center;
+}
+
+.home-seal {
+  width: 72px; height: 72px;
+  margin: 0 auto var(--space-6);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  color: var(--color-seal);
+  border: 2px solid var(--color-seal);
+  border-radius: 4px;
+  transform: rotate(-3deg);
+  opacity: 0.9;
+}
+
+.home-title {
+  font-family: var(--font-display);
+  font-size: var(--text-3xl);
+  font-weight: 400;
+  letter-spacing: 0.4em;
+  color: var(--color-text);
+  margin-bottom: var(--space-2);
+}
+
+.home-subtitle {
+  font-size: var(--text-sm);
+  color: var(--color-text-faint);
+  letter-spacing: 1em;
+  margin-bottom: var(--space-8);
+}
+
+.home-desc {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 1.8;
+  margin-bottom: var(--space-10);
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.home-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-12);
+}
+
+.home-section-card {
+  padding: var(--space-6) var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition);
+  text-align: center;
+}
+.home-section-card:hover {
+  border-color: var(--color-accent-light);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.home-section-card .card-name {
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  color: var(--color-text);
+  letter-spacing: 0.15em;
+  margin-bottom: var(--space-2);
+}
+
+.home-section-card .card-count {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+}
+
+.home-quote {
+  margin-top: var(--space-4);
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--color-border-light);
+}
+.home-quote p {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-style: italic;
+  line-height: 2;
+}
+.home-quote cite {
+  display: block;
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  font-style: normal;
+  margin-top: var(--space-2);
+}
+
+/* ===== Section View ===== */
+.section-content {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6) var(--space-12);
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-align: center;
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.section-sub {
+  margin-bottom: var(--space-6);
+}
+.section-sub-title {
+  font-size: var(--text-sm);
+  color: var(--color-text-faint);
+  letter-spacing: 0.2em;
+  margin-bottom: var(--space-3);
+  padding-left: var(--space-1);
+}
+
+.section-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-8);
+}
+
+.section-poems {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: var(--space-2);
+}
+
+.section-poem-link {
+  padding: var(--space-3) var(--space-2);
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all var(--transition);
+  letter-spacing: 0.05em;
+}
+.section-poem-link:hover {
+  color: var(--color-accent);
+  border-color: var(--color-border-light);
+  background: var(--color-highlight);
+}
+
+/* ===== Poem View ===== */
+.poem-content {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: var(--space-8) var(--space-6) var(--space-16);
+}
+
+.poem-nav-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  transition: color var(--transition);
+  padding: var(--space-1) 0;
+}
+.back-btn:hover { color: var(--color-accent); }
+
+.poem-position {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+}
+
+.poem-header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--color-border-light);
+}
+
+.poem-section-label {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  letter-spacing: 0.3em;
+  margin-bottom: var(--space-3);
+}
+
+.poem-title {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  color: var(--color-text);
+}
+
+.poem-body {
+  margin-bottom: var(--space-8);
+}
+
+.stanza {
+  margin-bottom: var(--space-6);
+  text-align: center;
+}
+.stanza:last-child { margin-bottom: 0; }
+
+.poem-line {
+  font-size: var(--text-base);
+  line-height: 2.4;
+  color: var(--color-text);
+  letter-spacing: 0.08em;
+}
+
+/* Ruby annotations for rare characters */
+ruby {
+  ruby-align: center;
+}
+ruby rt {
+  font-size: 0.5em;
+  color: var(--color-ruby);
+  font-family: var(--font-body);
+  font-weight: 300;
+  letter-spacing: 0;
+}
+
+/* ===== Notes ===== */
+.poem-notes {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border-light);
+}
+
+.poem-notes-title {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  letter-spacing: 0.3em;
+  margin-bottom: var(--space-3);
+  text-align: center;
+}
+
+.poem-notes-text {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  line-height: 2;
+  text-align: center;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ===== Poem Nav Bottom ===== */
+.poem-nav-bottom {
+  display: flex;
+  justify-content: space-between;
+  margin-top: var(--space-10);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--color-border-light);
+}
+
+.nav-link {
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  transition: color var(--transition);
+  max-width: 45%;
+}
+.nav-link:hover { color: var(--color-accent); }
+.nav-link.prev { text-align: left; }
+.nav-link.next { text-align: right; margin-left: auto; }
+.nav-link .nav-label {
+  font-size: 0.65rem;
+  color: var(--color-text-faint);
+  display: block;
+}
+.nav-link .nav-title {
+  letter-spacing: 0.1em;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
+    width: 280px;
+  }
+  .sidebar.open { transform: translateX(0); }
+
+  .mobile-header { display: flex; }
+
+  .main {
+    margin-left: 0;
+    padding-top: 48px;
+  }
+
+  .home-content {
+    padding: var(--space-10) var(--space-4) var(--space-8);
+  }
+
+  .home-seal {
+    width: 56px; height: 56px;
+    font-size: 1.6rem;
+  }
+
+  .poem-content,
+  .section-content {
+    padding-left: var(--space-4);
+    padding-right: var(--space-4);
+  }
+
+  .section-poems {
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+  }
+}
+
+/* Desktop theme toggle in sidebar */
+@media (min-width: 769px) {
+  .sidebar-header {
+    position: relative;
+  }
+  .theme-btn.desktop-theme {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    width: 28px; height: 28px;
+  }
+}
+
+/* Scrollbar styling */
+.sidebar-toc::-webkit-scrollbar { width: 4px; }
+.sidebar-toc::-webkit-scrollbar-track { background: transparent; }
+.sidebar-toc::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 2px; }
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.view.active {
+  animation: fadeIn 300ms ease;
+}
+
+/* Print styles */
+@media print {
+  .sidebar, .mobile-header, .back-btn, .poem-nav-bottom { display: none !important; }
+  .main { margin-left: 0 !important; }
+  .poem-line { font-size: 14pt; }
+}
